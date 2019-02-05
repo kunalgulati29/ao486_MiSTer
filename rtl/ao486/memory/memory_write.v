@@ -68,6 +68,12 @@ module memory_write(
 
 //------------------------------------------------------------------------------
 
+localparam [1:0] STATE_IDLE        = 2'd0;
+localparam [1:0] STATE_FIRST_WAIT  = 2'd1;
+localparam [1:0] STATE_SECOND      = 2'd2;
+
+//------------------------------------------------------------------------------
+
 //------------------------------------------------------------------------------
 
 reg [1:0]   state;
@@ -131,12 +137,6 @@ always @(posedge clk) begin
     else if(wr_reset)                               ac_fault <= `FALSE;
     else if(tlbwrite_ac_fault && ~(reset_waiting))  ac_fault <= `TRUE;
 end
-
-//------------------------------------------------------------------------------
-
-localparam [1:0] STATE_IDLE        = 2'd0;
-localparam [1:0] STATE_FIRST_WAIT  = 2'd1;
-localparam [1:0] STATE_SECOND      = 2'd2;
 
 //------------------------------------------------------------------------------
 

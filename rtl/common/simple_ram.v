@@ -24,8 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-module simple_ram
-(
+module simple_ram #(
+    parameter width     = 1,
+    parameter widthad   = 1
+) (
     input                clk,
     
     input  [widthad-1:0] wraddress,
@@ -35,8 +37,6 @@ module simple_ram
     input  [widthad-1:0] rdaddress,
     output   [width-1:0] q
 );
-parameter width     = 1;
-parameter widthad   = 1;
 
 reg [width-1:0]   mem [(2**widthad)-1:0];
 reg [widthad-1:0] rdaddr;

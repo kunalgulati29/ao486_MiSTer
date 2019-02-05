@@ -56,12 +56,6 @@ module prefetch_fifo(
 
 //------------------------------------------------------------------------------
 
-assign prefetchfifo_accept_data = (second_processing)? second : q[67:0];
-
-assign prefetchfifo_accept_empty= empty && second_processing == `FALSE;
-
-//------------------------------------------------------------------------------
-
 wire [135:0] q;
 wire         empty;
 
@@ -71,6 +65,12 @@ wire         empty;
 
 reg        second_processing;
 reg [67:0] second;
+
+//------------------------------------------------------------------------------
+
+assign prefetchfifo_accept_data = (second_processing)? second : q[67:0];
+
+assign prefetchfifo_accept_empty= empty && second_processing == `FALSE;
 
 //------------------------------------------------------------------------------
 

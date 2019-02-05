@@ -24,7 +24,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-module simple_mult(
+module simple_mult #(
+    parameter widtha = 1,
+    parameter widthb = 1,
+    parameter widthp = 2
+) (
     input                           clk,
     input signed    [widtha-1:0]    a,
     input signed    [widthb-1:0]    b,
@@ -33,9 +37,6 @@ module simple_mult(
 
 //------------------------------------------------------------------------------
 
-parameter widtha = 1;
-parameter widthb = 1;
-parameter widthp = 2;
 
 //------------------------------------------------------------------------------
 

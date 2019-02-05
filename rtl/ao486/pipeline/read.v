@@ -226,6 +226,7 @@ wire [7:0]  rd_sib;
 
 wire        rd_operand_16bit;
 wire        rd_address_16bit;
+wire        rd_waiting;
 
 //------------------------------------------------------------------------------
 
@@ -337,7 +338,6 @@ wire rd_address_waiting;
 //------------------------------------------------------------------------------
 
 wire [31:0] rd_system_linear;
-wire        rd_waiting;
 
 wire rd_req_memory;
 wire rd_req_eflags;

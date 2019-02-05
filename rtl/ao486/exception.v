@@ -142,6 +142,11 @@ module exception(
     output              exc_pf_check
 );
 
+`define EXCEPTION_TYPE_BENIGN           2'd0
+`define EXCEPTION_TYPE_CONTRIBUTORY     2'd1
+`define EXCEPTION_TYPE_PAGE_FAULT       2'd2
+`define EXCEPTION_TYPE_DOUBLE_FAULT     2'd3
+
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -184,6 +189,7 @@ wire [1:0]  exception_type;
 
 wire        shutdown_start;
 
+`include "autogen/exception.v"
 //------------------------------------------------------------------------------
 
 assign exc_vector = exc_vector_full[7:0];
@@ -361,11 +367,6 @@ assign class_trap  = (vector == `EXCEPTION_BP) || (vector == `EXCEPTION_OF);
 
 assign class_abort = (vector == `EXCEPTION_MC);
 
-`define EXCEPTION_TYPE_BENIGN           2'd0
-`define EXCEPTION_TYPE_CONTRIBUTORY     2'd1
-`define EXCEPTION_TYPE_PAGE_FAULT       2'd2
-`define EXCEPTION_TYPE_DOUBLE_FAULT     2'd3
-
 assign exception_type =
     (vector == `EXCEPTION_DE) || (vector >= `EXCEPTION_TS && vector <= `EXCEPTION_GP)?  `EXCEPTION_TYPE_CONTRIBUTORY :
     (vector == `EXCEPTION_DF)?                                                          `EXCEPTION_TYPE_DOUBLE_FAULT :
@@ -520,7 +521,6 @@ ENDIF();
 
 //------------------------------------------------------------------------------
 
-`include "autogen/exception.v"
 
 
 endmodule

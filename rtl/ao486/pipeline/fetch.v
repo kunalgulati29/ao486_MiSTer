@@ -61,6 +61,7 @@ wire partial;
 assign prefetch_eip = wr_eip;
 
 //------------------------------------------------------------------------------
+reg [3:0] fetch_count;
 
 assign fetch_valid      = (prefetchfifo_accept_empty || prefetchfifo_accept_data[67:64] >= `PREFETCH_MIN_FAULT)? 4'd0 : prefetchfifo_accept_data[67:64] - fetch_count;
 
@@ -86,7 +87,6 @@ assign partial                  = dec_acceptable <  fetch_valid && prefetchfifo_
 
 //------------------------------------------------------------------------------
 
-reg [3:0] fetch_count;
 always @(posedge clk) begin
     if(rst_n == 1'b0)               fetch_count <= 4'd0;
     else if(pr_reset)               fetch_count <= 4'd0;

@@ -154,6 +154,36 @@ module tlb(
 
 //------------------------------------------------------------------------------
 
+localparam [4:0] STATE_IDLE             = 5'd0;
+localparam [4:0] STATE_CODE_CHECK       = 5'd1;
+localparam [4:0] STATE_LOAD_PDE         = 5'd2;
+localparam [4:0] STATE_LOAD_PTE_START   = 5'd3;
+localparam [4:0] STATE_LOAD_PTE         = 5'd4;
+localparam [4:0] STATE_LOAD_PTE_END     = 5'd5;
+localparam [4:0] STATE_SAVE_PDE         = 5'd6;
+localparam [4:0] STATE_SAVE_PTE_START   = 5'd7;
+localparam [4:0] STATE_SAVE_PTE         = 5'd8;
+localparam [4:0] STATE_CHECK_CHECK      = 5'd9;
+localparam [4:0] STATE_WRITE_CHECK      = 5'd10;
+localparam [4:0] STATE_WRITE_WAIT_START = 5'd11;
+localparam [4:0] STATE_WRITE_WAIT       = 5'd12;
+localparam [4:0] STATE_WRITE_DOUBLE     = 5'd13;
+localparam [4:0] STATE_READ_CHECK       = 5'd14;
+localparam [4:0] STATE_READ_WAIT_START  = 5'd15;
+localparam [4:0] STATE_READ_WAIT        = 5'd16;
+localparam [4:0] STATE_RETRY            = 5'd17;
+
+localparam [1:0] TYPE_CODE  = 2'd0;
+localparam [1:0] TYPE_CHECK = 2'd1;
+localparam [1:0] TYPE_WRITE = 2'd2;
+localparam [1:0] TYPE_READ  = 2'd3;
+
+localparam [1:0] WRITE_DOUBLE_NONE    = 2'd0;
+localparam [1:0] WRITE_DOUBLE_CHECK   = 2'd1;
+localparam [1:0] WRITE_DOUBLE_RESTART = 2'd2;
+
+//------------------------------------------------------------------------------
+
 reg [4:0]   state;
 
 reg [31:0]  linear;
@@ -199,6 +229,26 @@ wire [31:0] cr3_base;
 wire        cr3_pwt;
 wire        cr3_pcd;
 
+wire translate_combined_rw;
+wire translate_combined_su;
+
+wire tlbregs_tlbflushsingle_do;
+wire tlbregs_tlbflushall_do;
+
+wire        translate_do;
+wire        translate_valid;
+wire [31:0] translate_physical;
+wire        translate_pwt;
+wire        translate_pcd;
+
+wire        tlbregs_write_do;
+wire [31:0] tlbregs_write_linear;
+wire [31:0] tlbregs_write_physical;
+wire        tlbregs_write_pwt;
+wire        tlbregs_write_pcd;
+wire        tlbregs_write_combined_rw;
+wire        tlbregs_write_combined_su;
+
 assign cr3_base = { cr3[31:12], 12'd0 };
 assign cr3_pwt  = cr3[3];
 assign cr3_pcd  = cr3[4];
@@ -241,62 +291,12 @@ assign tlbcode_linear = linear;
 
 //------------------------------------------------------------------------------
 
-localparam [4:0] STATE_IDLE             = 5'd0;
-localparam [4:0] STATE_CODE_CHECK       = 5'd1;
-localparam [4:0] STATE_LOAD_PDE         = 5'd2;
-localparam [4:0] STATE_LOAD_PTE_START   = 5'd3;
-localparam [4:0] STATE_LOAD_PTE         = 5'd4;
-localparam [4:0] STATE_LOAD_PTE_END     = 5'd5;
-localparam [4:0] STATE_SAVE_PDE         = 5'd6;
-localparam [4:0] STATE_SAVE_PTE_START   = 5'd7;
-localparam [4:0] STATE_SAVE_PTE         = 5'd8;
-localparam [4:0] STATE_CHECK_CHECK      = 5'd9;
-localparam [4:0] STATE_WRITE_CHECK      = 5'd10;
-localparam [4:0] STATE_WRITE_WAIT_START = 5'd11;
-localparam [4:0] STATE_WRITE_WAIT       = 5'd12;
-localparam [4:0] STATE_WRITE_DOUBLE     = 5'd13;
-localparam [4:0] STATE_READ_CHECK       = 5'd14;
-localparam [4:0] STATE_READ_WAIT_START  = 5'd15;
-localparam [4:0] STATE_READ_WAIT        = 5'd16;
-localparam [4:0] STATE_RETRY            = 5'd17;
-
-localparam [1:0] TYPE_CODE  = 2'd0;
-localparam [1:0] TYPE_CHECK = 2'd1;
-localparam [1:0] TYPE_WRITE = 2'd2;
-localparam [1:0] TYPE_READ  = 2'd3;
-
-localparam [1:0] WRITE_DOUBLE_NONE    = 2'd0;
-localparam [1:0] WRITE_DOUBLE_CHECK   = 2'd1;
-localparam [1:0] WRITE_DOUBLE_RESTART = 2'd2;
-
-//------------------------------------------------------------------------------
-
 tlb_memtype tlb_memtype_inst(
     .physical           (memtype_physical),             //input [31:0]
                        
     .cache_disable      (memtype_cache_disable),        //output
     .write_transparent  (memtype_write_transparent)     //output
 );
-
-wire translate_combined_rw;
-wire translate_combined_su;
-
-wire tlbregs_tlbflushsingle_do;
-wire tlbregs_tlbflushall_do;
-
-wire        translate_do;
-wire        translate_valid;
-wire [31:0] translate_physical;
-wire        translate_pwt;
-wire        translate_pcd;
-
-wire        tlbregs_write_do;
-wire [31:0] tlbregs_write_linear;
-wire [31:0] tlbregs_write_physical;
-wire        tlbregs_write_pwt;
-wire        tlbregs_write_pcd;
-wire        tlbregs_write_combined_rw;
-wire        tlbregs_write_combined_su;
 
 tlb_regs tlb_regs_inst(
     .clk                        (clk),
@@ -337,6 +337,7 @@ tlb_regs tlb_regs_inst(
 );
 
 //------------------------------------------------------------------------------
+`include "autogen/tlb.v"
 
 always @(posedge clk) begin
     if(rst_n == 1'b0)   code_pf <= `FALSE;
@@ -1061,6 +1062,5 @@ ENDIF();
 
 //------------------------------------------------------------------------------
 
-`include "autogen/tlb.v"
 
 endmodule

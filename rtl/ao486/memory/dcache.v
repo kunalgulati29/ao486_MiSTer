@@ -140,14 +140,6 @@ wire [127:0]    dcache_writeline_line;
 
 //------------------------------------------------------------------------------
 
-assign writeline_do         = dcache_writeline_do || control_ram_writeline_do;
-assign writeline_address    = (dcache_writeline_do)? dcache_writeline_address : control_ram_writeline_address;
-assign writeline_line       = (dcache_writeline_do)? dcache_writeline_line    : control_ram_writeline_line;
-
-assign dcache_busy = state != STATE_IDLE;
-
-//------------------------------------------------------------------------------
-
 wire [31:0] control_ram_address;
 wire        control_ram_read_do;
 wire        control_ram_write_do;
@@ -214,6 +206,14 @@ wire [31:0]     data_ram3_address;
 wire            data_ram3_write_do;
 wire [127:0]    data_ram3_data;
 wire [147:0]    data_ram3_q;
+
+//------------------------------------------------------------------------------
+
+assign writeline_do         = dcache_writeline_do || control_ram_writeline_do;
+assign writeline_address    = (dcache_writeline_do)? dcache_writeline_address : control_ram_writeline_address;
+assign writeline_line       = (dcache_writeline_do)? dcache_writeline_line    : control_ram_writeline_line;
+
+assign dcache_busy = state != STATE_IDLE;
 
 //------------------------------------------------------------------------------
 
