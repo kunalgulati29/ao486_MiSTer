@@ -60,7 +60,9 @@ module ao486 (
     output              avalon_io_write,
     output  [31:0]      avalon_io_writedata,
     
-    input               avalon_io_waitrequest
+    input               avalon_io_waitrequest,
+
+    output [31:0] eip
 );
 
 //------------------------------------------------------------------------------
@@ -106,7 +108,6 @@ wire [7:0]  wr_int_vector;
 wire        wr_exception_external_set;
 wire        wr_exception_finished;
 
-wire [31:0] eip;
 wire [31:0] dec_eip;
 wire [31:0] rd_eip;
 wire [31:0] exe_eip;
@@ -404,7 +405,6 @@ wire        tlbcheck_page_fault;
 wire [31:0] tlbcheck_address;
 wire        tlbcheck_rw;
 
-wire        dcache_busy;
 
 wire        tlbflushsingle_do;
 wire        tlbflushsingle_done;

@@ -268,9 +268,9 @@ module pipeline(
 
 //------------------------------------------------------------------------------
 
-// synthesis translate_off
-wire _unused_ok = &{ 1'b0, SW[16:7], 1'b0 };
-// synthesis translate_on
+//// synthesis translate_off
+//wire _unused_ok = &{ 1'b0, SW[16:7], 1'b0 };
+//// synthesis translate_on
 
 //------------------------------------------------------------------------------
 
