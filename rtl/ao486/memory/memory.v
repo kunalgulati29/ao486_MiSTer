@@ -147,7 +147,8 @@ module memory(
     
     input               avm_waitrequest,
     input               avm_readdatavalid,
-    input       [31:0]  avm_readdata
+    input       [31:0]  avm_readdata,
+    output              readcode_do_ifill
 );
 
 
@@ -304,7 +305,9 @@ wire [31:0]  req_readcode_address;
 wire [127:0] req_readcode_line;
 wire [31:0]  req_readcode_partial;
 wire         req_readcode_partial_done;
-    
+
+assign readcode_do_ifill = req_readcode_do;
+
 wire         resp_readcode_do;
 wire         resp_readcode_done;
 wire [31:0]  resp_readcode_address;

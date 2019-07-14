@@ -62,7 +62,8 @@ module ao486 (
     
     input               avalon_io_waitrequest,
 
-    output [31:0] eip
+    output  [31:0]      eip,
+    output              readcode_do_ifill
 );
 
 //------------------------------------------------------------------------------
@@ -559,7 +560,8 @@ memory memory_inst(
     .avm_read                      (avm_read),                      //output
     .avm_waitrequest               (avm_waitrequest),               //input
     .avm_readdatavalid             (avm_readdatavalid),             //input
-    .avm_readdata                  (avm_readdata)                   //input [31:0]
+    .avm_readdata                  (avm_readdata),                  //input [31:0]
+    .readcode_do_ifill             (readcode_do_ifill)
 );
 
 //------------------------------------------------------------------------------
