@@ -147,7 +147,8 @@ module memory(
     
     input               avm_waitrequest,
     input               avm_readdatavalid,
-    input       [31:0]  avm_readdata
+    input       [31:0]  avm_readdata,
+    output      [1:0]   state_transducer
 );
 
 
@@ -304,7 +305,7 @@ wire [31:0]  req_readcode_address;
 wire [127:0] req_readcode_line;
 wire [31:0]  req_readcode_partial;
 wire         req_readcode_partial_done;
-    
+
 wire         resp_readcode_do;
 wire         resp_readcode_done;
 wire [31:0]  resp_readcode_address;
@@ -568,7 +569,8 @@ avalon_mem avalon_mem_inst(
     
     .avm_waitrequest            (avm_waitrequest),              //input
     .avm_readdatavalid          (avm_readdatavalid),            //input
-    .avm_readdata               (avm_readdata)                  //input [31:0]
+    .avm_readdata               (avm_readdata),                  //input [31:0]
+    .state_transducer           (state_transducer)
 );
 
 //------------------------------------------------------------------------------

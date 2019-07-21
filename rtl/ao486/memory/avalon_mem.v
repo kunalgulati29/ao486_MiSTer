@@ -90,7 +90,8 @@ module avalon_mem(
     
     input               avm_waitrequest,
     input               avm_readdatavalid,
-    input       [31:0]  avm_readdata
+    input       [31:0]  avm_readdata,
+    output      [1:0]   state_transducer
 );
 
 //------------------------------------------------------------------------------
@@ -103,6 +104,8 @@ reg [31:0]  bus_3;
 reg [3:0]   byteenable_next;
 reg [1:0]   counter;
 reg [1:0]   state;
+
+assign state_transducer = state;
 
 reg         read_burst_done_trigger;
 reg         read_line_done_trigger;
