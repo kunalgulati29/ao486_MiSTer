@@ -63,3 +63,7 @@ memory/tlb_regs.v
 ../common/simple_fifo.v
 ../common/simple_ram.v
 ../common/simple_mult.v
+../soc/pit/pit.v
+../soc/pit/pit_counter.v
+../soc/pic/pic.v
+../soc/rtc/rtc.v
